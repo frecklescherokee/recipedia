@@ -1,3 +1,9 @@
 body{
     background-color: aqua;
 }
+:root{
+--primary-color: #8619E6;
+--secondary-color:#EDB33E;
+--tertiary-color: #B8B6B2;
+
+}
