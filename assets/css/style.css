@@ -2,8 +2,8 @@ body{
     background-color: aqua;
 }
 :root{
---primary-color: purple;
---secondary-color: gold;
---tertiary-color: grey;
+--primary-color: #8619E6;
+--secondary-color:#EDB33E;
+--tertiary-color: #B8B6B2;
 
 }
