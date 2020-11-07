@@ -12,8 +12,9 @@ var ingredientsInstructionsEl;
 var shoppingListEl;
 
 
-function fetchRecipes(){
-  const apiUrl = `${spoonacularBaseUrl}/recipes/complexSearch?&apiKey=${RECIPE_API_KEY}&${getQueryParams(true, true)}`;
+function fetchRecipes(searchValue){
+
+  const apiUrl = `${spoonacularBaseUrl}/recipes/complexSearch?&apiKey=${RECIPE_API_KEY}&${getQueryParams(searchValue)}`;
   let recipes; 
 
   fetch(apiUrl).then(response => {
@@ -21,9 +22,8 @@ function fetchRecipes(){
       response.json().then(data => {
         recipes = data.results;
         console.log('Recipes:', recipes);
-        fetchIngredients(recipes[0].id)
         // bring up the recipe list page
-        generateRecipeListPage(recipes);
+        generateRecipesList(recipes);
       });
     } else {
       handleError();
@@ -45,16 +45,10 @@ function fetchIngredients(recipeId){
   })
 }
 
-function getQueryParams(useDiet, useQuery){
+function getQueryParams(queryParam){
   let httpParams = '';
-  let dietParam = 'vegan';
-  let queryParam = 'pasta';
 
-  if (useDiet){
-    httpParams += `&diet=${dietParam}`;
-  }
-
-  if (useQuery){
+  if (queryParam){
     httpParams += `&query=${queryParam}`;
   }
 
@@ -65,7 +59,7 @@ function handleError(){
   alert('Error occured with spoonacular API call');
 }
 
-/* ********************** HTML GENERATORS ********************** */
+//* ********************** HTML GENERATORS ********************** */
 
 /* ***** Utility functions to generate generic HTML elements ***** */
 
@@ -135,7 +129,7 @@ function generateStartPage(){
   // generate the 3 div elements of this page
   let inputContainerDivEl = document.createElement('div');
   inputContainerDivEl.setAttribute('class', 'field has-addons has-addons-centered');
-  let headingDivEl = generateHeadingDivEl("Recipedia", "title is-3 has-text-centered");
+  let headingDivEl = generateHeadingDivEl("Recipedia", "title is-3 has-text-centered headin");
   let inputDivEl = generateInputDivEl();
   let submitButtonDivEl = generateSubmitButtonDivEl();
 
@@ -151,7 +145,10 @@ function generateStartPage(){
   fetchButtonEl = document.getElementById('fetch-button');
 
   //event listener for "fetch" button
-  fetchButtonEl.addEventListener('click', fetchRecipes);
+  fetchButtonEl.addEventListener('click', function() {
+    const inputEl = document.querySelector('#search-value');
+    fetchRecipes(inputEl.value);
+  });
 }
 
 /* Start Page Element Generators */
@@ -164,6 +161,7 @@ function generateInputDivEl() {
     inputEl.setAttribute('placeholder', 'Search for Recipes');
     inputEl.setAttribute('class', 'input');
     inputEl.setAttribute('type', 'text');
+    inputEl.setAttribute('id', 'search-value')
     divEl.setAttribute('class','control');
     divEl.appendChild(inputEl);
 
@@ -185,58 +183,113 @@ function generateSubmitButtonDivEl() {
     return divEl;
 }
 
+/* *************GENERATE RECIPES LIST************* */
+function generateRecipesList(recipesList) {
+  let divContainerEl = document.createElement('div');
+  let divHeaderEl = generateRecipesListHeadingDivEl();
 
-//////////////////////////////////////////////////////////////
-/*****  Recipe List Page Generator *****/
-function generateRecipeListPage(recipes){
-  console.log(recipes);
-  console.log("the recipes array should be just above here.");
+  divContainerEl.classList.add('recipes-container');
+  divContainerEl.appendChild(divHeaderEl);
+
+  recipesList.forEach(recipe => {
+      divContainerEl.appendChild(generateArticleItem(recipe));
+  })
+
+  mainEl.appendChild(divContainerEl);
+}
+
+function generateRecipesListHeadingDivEl() {
+  let divEl = document.createElement('div');
+  let headingEl = document.createElement('h2');
+
+  divEl.classList.add('header');
+  headingEl.setAttribute('class', 'title is-2' );
+  headingEl.textContent = 'Recipes List';
+
+  divEl.appendChild(headingEl);
   
-  // clear main element of previous HTML
+  return divEl;
+
+}
+
+function generateArticleItem(recipe) {  
+  let articleEl = document.createElement('article');
+  let articleImageEl = generateArticleImage(recipe.image);
+  let articleContentEl = generateArticleContent(recipe);
+
   clearMain();
+  articleEl.classList.add('media');
+  articleEl.appendChild(articleImageEl);
+  articleEl.appendChild(articleContentEl);
 
-  // generate the <h1> and <ul> elements of this page
-  let headingDivEl = generateHeadingDivEl("Recipes");
-  let recipeListDivEl = generateRecipelistDivEl(recipes);
-  
-  // append the generated elements to the <main> element
-  mainEl.appendChild(headingDivEl);
-  mainEl.appendChild(recipeListDivEl);
+  return articleEl;
+
 }
 
-// function to generate the recipe list
-function generateRecipelistDivEl(recipes) {
-  let listEl = generateListEl();
+function generateArticleImage(image) {
+  let figureEl  = document.createElement('figure');
+  let paragraphEl = document.createElement('p');
+  let imgEl = document.createElement('img');
 
-  // add for loop logic to show top 10 recipe list items
-  for (i = 0; i < recipes.length; i++) {
-    // call function to make a list item with 3 divs
-    let listItemEl = generateRecipeListItem(recipes, i);
-    // assign picture, name  and ingredient anchor to each
-      // the 3 below items are pseudocode
-        //listItemEl.img = recipes.image[i];
-        //listItemEl.p = recipes.title[i];
-        //listItemEl.img = recipes.image[i];
-    // append to list
-    listEl.appendChild(listItemEl);
-  }
-  return listEl;
+
+  console.log('image:', image)
+  imgEl.setAttribute('src', image);
+  paragraphEl.setAttribute('class', 'image is-128x128');
+  figureEl.setAttribute('class', 'media-left');
+
+  paragraphEl.appendChild(imgEl);
+  figureEl.appendChild(paragraphEl);
+
+  return figureEl;
 }
 
-// function to generate recipe list item
-function generateRecipeListItem(recipes, index) {
-  let listItemEl = document.createElement('li');
+function generateArticleContent(recipe) {
+  let divMediaConentEl = document.createElement('div');
+  let divContentEl = document.createElement('div');
+  let paragraphEl = document.createElement('p');
+  let boldTitleEl = document.createElement('strong');
+  let breakEl = document.createElement('br');
+  let divButtonsEl = document.createElement('div');
+  let saveButtonEl = document.createElement('button');
+  let viewButtonEl = document.createElement('button');
 
-  // make DOM elements for the img, p and a (all within divs)
-  let imageEl = generateImageEl(recipes, index);
-  let recipeTitleEl = generateParagraphEl(recipes, index);
 
-  // append elements to the list item
-  listItemEl.appendChild(imageEl);
-  listItemEl.appendChild(recipeTitleEl);
+  divMediaConentEl.classList.add('media-content') ;
+  divContentEl.classList.add('content');
+  boldTitleEl.textContent = recipe.title;
 
-  return listItemEl;
+  divButtonsEl.classList.add('buttons');
+  saveButtonEl.setAttribute('class', 'button is-primary');
+  saveButtonEl.textContent= 'Save';
+  saveButtonEl.addEventListener('click', function(){
+      saveRecipe(recipe.id);
+  } );
+  viewButtonEl.setAttribute('class', 'button is-link');
+  viewButtonEl.textContent = 'View';
+  viewButtonEl.addEventListener('click', function(){
+    fetchIngredients(recipe.id);
+  })
+
+  divButtonsEl.appendChild(saveButtonEl);
+  divButtonsEl.appendChild(viewButtonEl);
+
+  paragraphEl.appendChild(boldTitleEl);
+  paragraphEl.appendChild(breakEl);
+  paragraphEl.appendChild(divButtonsEl);
+
+  divContentEl.appendChild(paragraphEl);
+
+  divMediaConentEl.appendChild(divContentEl);
+
+  return divMediaConentEl;
+
+
 }
 
+function saveRecipe(recipeId) {
+  console.log(recipeId);
 
+}
 generateStartPage();
+
+
