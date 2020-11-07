@@ -85,8 +85,9 @@ function generateMainContentDiv(){
 }
 
 // function to generate an h1 within a div
-function generateHeadingDivEl(headerText){
+function generateHeadingDivEl(headerText, classes){
   let headingEl = document.createElement('h1');
+  headingEl.setAttribute('class', classes);
   let divEl = generateMainContentDiv();
 
   headingEl.textContent = headerText;
@@ -132,14 +133,19 @@ function generateParagraphEl(recipes, index) {
 /***** Start Page Generator *****/
 function generateStartPage(){
   // generate the 3 div elements of this page
-  let headingDivEl = generateHeadingDivEl("Recipedia");
+  let inputContainerDivEl = document.createElement('div');
+  inputContainerDivEl.setAttribute('class', 'field has-addons has-addons-centered');
+  let headingDivEl = generateHeadingDivEl("Recipedia", "title is-3 has-text-centered");
   let inputDivEl = generateInputDivEl();
   let submitButtonDivEl = generateSubmitButtonDivEl();
 
+  
+
   // append the 3 generated elements to the <main> element
   mainEl.appendChild(headingDivEl);
-  mainEl.appendChild(inputDivEl);
-  mainEl.appendChild(submitButtonDivEl);
+  inputContainerDivEl.appendChild(inputDivEl);
+  inputContainerDivEl.appendChild(submitButtonDivEl);
+  mainEl.appendChild(inputContainerDivEl);
 
   // create DOM element to reference the fetch/submit button we just added so it can be listened to
   fetchButtonEl = document.getElementById('fetch-button');
@@ -156,6 +162,9 @@ function generateInputDivEl() {
     let divEl = generateMainContentDiv();
 
     inputEl.setAttribute('placeholder', 'Search for Recipes');
+    inputEl.setAttribute('class', 'input');
+    inputEl.setAttribute('type', 'text');
+    divEl.setAttribute('class','control');
     divEl.appendChild(inputEl);
 
     return divEl;
@@ -165,6 +174,9 @@ function generateInputDivEl() {
 function generateSubmitButtonDivEl() {
     let buttonEl = document.createElement('button');
     let divEl = generateMainContentDiv();
+
+    divEl.setAttribute('class', 'control');
+    buttonEl.setAttribute('class', 'button is-info');
 
     buttonEl.setAttribute('id', 'fetch-button');
     buttonEl.textContent = 'Submit';
@@ -227,4 +239,4 @@ function generateRecipeListItem(recipes, index) {
 }
 
 
-//generateStartPage();
+generateStartPage();
