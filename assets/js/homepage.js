@@ -22,14 +22,15 @@ function fetchRecipes(){
         recipes = data.results;
         console.log('Recipes:', recipes);
         fetchIngredients(recipes[0].id)
+        // bring up the recipe list page
+        generateRecipeListPage(recipes);
       });
     } else {
       handleError();
     }
   }).catch(handleError);
 
-  // bring up the recipe list page
-  generateRecipeListPage();
+  
 }
 
 function fetchIngredients(recipeId){
@@ -102,11 +103,11 @@ function generateListEl() {
 }
 
 // function to generate an img within a div
-function generateImageEl(i) {
+function generateImageEl(recipes, index) {
   let imgEl = document.createElement('img');
   let divEl = generateMainContentDiv();
 
-  imgEl.setAttribute('src', 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTD1kMb0H58I45e9dgLJqEsU7Nc3W1SwoWtpQ&usqp=CAU');
+  imgEl.setAttribute('src',recipes[index].image);
 
   divEl.appendChild(imgEl);
 
@@ -114,14 +115,12 @@ function generateImageEl(i) {
 }
 
 // function to generate a paragraph <p> within a div
-function generateParagraphEl(i) {
+function generateParagraphEl(recipes, index) {
   let paragraphEl = document.createElement('p');
   let divEl = generateMainContentDiv();
 
-  paragraphEl.textContent = "Recipe name placeholder"
-  //name = "";
-  //console.log("recipes[i].title");
-  //paragraphEl.textContent = name;
+  paragraphEl.textContent=(recipes[i].title);
+
   divEl.appendChild(paragraphEl);
 
   return divEl;
@@ -177,13 +176,16 @@ function generateSubmitButtonDivEl() {
 
 //////////////////////////////////////////////////////////////
 /*****  Recipe List Page Generator *****/
-function generateRecipeListPage(){
+function generateRecipeListPage(recipes){
+  console.log(recipes);
+  console.log("the recipes array should be just above here.");
+  
   // clear main element of previous HTML
   clearMain();
 
   // generate the <h1> and <ul> elements of this page
   let headingDivEl = generateHeadingDivEl("Recipes");
-  let recipeListDivEl = generateRecipelistDivEl();
+  let recipeListDivEl = generateRecipelistDivEl(recipes);
   
   // append the generated elements to the <main> element
   mainEl.appendChild(headingDivEl);
@@ -191,13 +193,13 @@ function generateRecipeListPage(){
 }
 
 // function to generate the recipe list
-function generateRecipelistDivEl() {
+function generateRecipelistDivEl(recipes) {
   let listEl = generateListEl();
 
   // add for loop logic to show top 10 recipe list items
-  for (i = 0; i < 10; i++) {
+  for (i = 0; i < recipes.length; i++) {
     // call function to make a list item with 3 divs
-    let listItemEl = generateRecipeListItem(i);
+    let listItemEl = generateRecipeListItem(recipes, i);
     // assign picture, name  and ingredient anchor to each
       // the 3 below items are pseudocode
         //listItemEl.img = recipes.image[i];
@@ -210,12 +212,12 @@ function generateRecipelistDivEl() {
 }
 
 // function to generate recipe list item
-function generateRecipeListItem(recipe) {
+function generateRecipeListItem(recipes, index) {
   let listItemEl = document.createElement('li');
 
   // make DOM elements for the img, p and a (all within divs)
-  let imageEl = generateImageEl(recipe);
-  let recipeTitleEl = generateParagraphEl(recipe);
+  let imageEl = generateImageEl(recipes, index);
+  let recipeTitleEl = generateParagraphEl(recipes, index);
 
   // append elements to the list item
   listItemEl.appendChild(imageEl);
