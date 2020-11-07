@@ -21,13 +21,15 @@ function fetchRecipes(){
       response.json().then(data => {
         recipes = data.results;
         console.log('Recipes:', recipes);
-        generateArticleItem(recipes);
+        // bring up the recipe list page
+        generateRecipesList(recipes);
       });
     } else {
       handleError();
     }
   }).catch(handleError);
 
+  
 }
 
 function fetchIngredients(recipeId){
@@ -194,6 +196,7 @@ function generateRecipesList(recipesList) {
       divContainerEl.appendChild(generateArticleItem(recipe));
   })
 
+  mainEl.appendChild(divContainerEl);
 }
 
 function generateRecipesListHeadingDivEl() {
