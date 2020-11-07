@@ -12,8 +12,9 @@ var ingredientsInstructionsEl;
 var shoppingListEl;
 
 
-function fetchRecipes(){
-  const apiUrl = `${spoonacularBaseUrl}/recipes/complexSearch?&apiKey=${RECIPE_API_KEY}&${getQueryParams(true, true)}`;
+function fetchRecipes(searchValue){
+
+  const apiUrl = `${spoonacularBaseUrl}/recipes/complexSearch?&apiKey=${RECIPE_API_KEY}&${getQueryParams(searchValue)}`;
   let recipes; 
 
   fetch(apiUrl).then(response => {
@@ -44,16 +45,10 @@ function fetchIngredients(recipeId){
   })
 }
 
-function getQueryParams(useDiet, useQuery){
+function getQueryParams(queryParam){
   let httpParams = '';
-  let dietParam = 'vegan';
-  let queryParam = 'pasta';
 
-  if (useDiet){
-    httpParams += `&diet=${dietParam}`;
-  }
-
-  if (useQuery){
+  if (queryParam){
     httpParams += `&query=${queryParam}`;
   }
 
@@ -134,7 +129,7 @@ function generateStartPage(){
   // generate the 3 div elements of this page
   let inputContainerDivEl = document.createElement('div');
   inputContainerDivEl.setAttribute('class', 'field has-addons has-addons-centered');
-  let headingDivEl = generateHeadingDivEl("Recipedia", "title is-3 has-text-centered");
+  let headingDivEl = generateHeadingDivEl("Recipedia", "title is-3 has-text-centered headin");
   let inputDivEl = generateInputDivEl();
   let submitButtonDivEl = generateSubmitButtonDivEl();
 
@@ -150,7 +145,10 @@ function generateStartPage(){
   fetchButtonEl = document.getElementById('fetch-button');
 
   //event listener for "fetch" button
-  fetchButtonEl.addEventListener('click', fetchRecipes);
+  fetchButtonEl.addEventListener('click', function() {
+    const inputEl = document.querySelector('#search-value');
+    fetchRecipes(inputEl.value);
+  });
 }
 
 /* Start Page Element Generators */
@@ -163,6 +161,7 @@ function generateInputDivEl() {
     inputEl.setAttribute('placeholder', 'Search for Recipes');
     inputEl.setAttribute('class', 'input');
     inputEl.setAttribute('type', 'text');
+    inputEl.setAttribute('id', 'search-value')
     divEl.setAttribute('class','control');
     divEl.appendChild(inputEl);
 
@@ -262,10 +261,14 @@ function generateArticleContent(recipe) {
   divButtonsEl.classList.add('buttons');
   saveButtonEl.setAttribute('class', 'button is-primary');
   saveButtonEl.textContent= 'Save';
-  saveButtonEl.addEventListener('click', saveRecipe, recipe.id );
+  saveButtonEl.addEventListener('click', function(){
+      saveRecipe(recipe.id);
+  } );
   viewButtonEl.setAttribute('class', 'button is-link');
   viewButtonEl.textContent = 'View';
-  viewButtonEl.addEventListener('click',fetchIngredients, recipe.id)
+  viewButtonEl.addEventListener('click', function(){
+    fetchIngredients(recipe.id);
+  })
 
   divButtonsEl.appendChild(saveButtonEl);
   divButtonsEl.appendChild(viewButtonEl);

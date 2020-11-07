@@ -1,6 +1,4 @@
-body{
-    background-color: aqua;
-}
+
 :root{
 --primary-color: #8619E6;
 --secondary-color:#EDB33E;
@@ -8,6 +6,15 @@ body{
 
 }
 
+.recipes-container{
+    margin: 5em 10em;
 
+}
 
+.header{
+    margin-bottom: 2em;
+}
 
+.headin{
+    margin-bottom: 10px;
+}
