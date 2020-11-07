@@ -4,36 +4,59 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./assets/css/style.css">
-  <title>Recipedia</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-  <title>Recipidia</title>
+  <title>Recipedia</title>
 </head>
 <body>
-  <!-- <input type="text"> 
-      <button id="fetch-button">Fetch</button> -->
-
-  <!-- ********** HEADER ********** -->
-  <header>
-    <div>
-      <a href="">Recipedia</a>
+  <!-- ********** NAV BAR ********** -->
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://bulma.io">
+        
+      </a>
+  
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
     </div>
-    <div>
-      <a href="">Shopping List</a>
-    </div>
-  </header>
-
-  <main class="main">
+  
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item">
+         Recipedia
+        </a>
+  
+        <a class="navbar-item">
+        Shopping List
+        </a>
+          </div>
+        </div>
+      </div>
     
-    <!-- <div>
-      <h1>Recipedia</h1>
+  </nav>
+  
+  
+  <!-- ********** HEADER ********** -->
+  
+  
+  <main class="main">
+    <h1 class="title is-3 has-text-centered	">Recipedia</h1>
+  
+    <!-- Search Bar -->
+   
+    <div class="field has-addons has-addons-centered">
+      <div class="field is-horizontal"></div>
+      <div class="control">
+        <input class="input" type="text" placeholder="Search for Recipe">
+      </div>
+      <div class="control">
+        <a class="button is-info">
+          Search
+        </a>
+      </div>
     </div>
-    <div>
-      <input placeholder="Search for Recipes">
-    </div>
-    <div>
-      <button>Submit</button>
-    </div>
-
     
     <div>
       <h1>Recipes</h1>
@@ -44,7 +67,7 @@
           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTD1kMb0H58I45e9dgLJqEsU7Nc3W1SwoWtpQ&usqp=CAU" alt="">
         </div>
         <div>
-        	<p>***** Recipe Name #1 *****</p>
+          <p>***** Recipe Name #1 *****</p>
         </div>
         <div>
           <a href="">View</a>
@@ -55,7 +78,7 @@
           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTD1kMb0H58I45e9dgLJqEsU7Nc3W1SwoWtpQ&usqp=CAU" alt="">
         </div>
         <div>
-        	<p>***** Recipe Name #2 *****</p>
+          <p>***** Recipe Name #2 *****</p>
         </div>
         <div>
           <a href="">View</a>
@@ -66,7 +89,7 @@
           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTD1kMb0H58I45e9dgLJqEsU7Nc3W1SwoWtpQ&usqp=CAU" alt="">
         </div>
         <div>
-        	<p>***** Recipe Name #3 *****</p>
+          <p>***** Recipe Name #3 *****</p>
         </div>
         <div>
           <a href="">View</a>
@@ -74,8 +97,6 @@
       </li>
     </ul>
     <button>Back</button>
-
-
     <div>
       <h1>***** Selected Recipe Name *****</h1>
     </div>
@@ -110,7 +131,6 @@
         </li>
       </ul>
     </div>
-
     <div>
       <div>
         <h2>Recipe Instructions</h2>
@@ -119,8 +139,6 @@
         <p>***** Recipe Instructions displayed here *****</p>
       </div>
     </div>
-
-
     <div>
       <h1>Shopping List</h1>
     </div>
@@ -149,10 +167,11 @@
           <button>Remove</button>
         </div>
       </li>
-    </ul> -->
-  </main>
-
-
-<script src="./assets/js/homepage.js"></script>
+    </ul> 
+  </main> 
+  
+  <script src="./assets/js/homepage.js"></script>
+  
+  
 </body>
 </html>
