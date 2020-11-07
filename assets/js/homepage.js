@@ -106,8 +106,7 @@ function generateImageEl(i) {
   let imgEl = document.createElement('img');
   let divEl = generateMainContentDiv();
 
-  imgEl.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTD1kMb0H58I45e9dgLJqEsU7Nc3W1SwoWtpQ&usqp=CAU";
-  //imgEl.src = "recipes[i].image";
+  imgEl.setAttribute('src', 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTD1kMb0H58I45e9dgLJqEsU7Nc3W1SwoWtpQ&usqp=CAU');
 
   divEl.appendChild(imgEl);
 
@@ -124,17 +123,6 @@ function generateParagraphEl(i) {
   //console.log("recipes[i].title");
   //paragraphEl.textContent = name;
   divEl.appendChild(paragraphEl);
-
-  return divEl;
-}
-
-// function to generate an anchor <a> within a div
-function generateAnchorEl(i) {
-  let anchorEl = document.createElement('a');
-  let divEl = generateMainContentDiv();
-
-  anchorEl.textContent = "anchor placeholder";
-  divEl.appendChild(anchorEl);
 
   return divEl;
 }
@@ -222,18 +210,16 @@ function generateRecipelistDivEl() {
 }
 
 // function to generate recipe list item
-function generateRecipeListItem(i) {
+function generateRecipeListItem(recipe) {
   let listItemEl = document.createElement('li');
 
   // make DOM elements for the img, p and a (all within divs)
-  let imageEl = generateImageEl(i);
-  let recipeTitleEl = generateParagraphEl(i);
-  let anchorEl = generateAnchorEl(i);
+  let imageEl = generateImageEl(recipe);
+  let recipeTitleEl = generateParagraphEl(recipe);
 
   // append elements to the list item
   listItemEl.appendChild(imageEl);
   listItemEl.appendChild(recipeTitleEl);
-  listItemEl.appendChild(anchorEl);
 
   return listItemEl;
 }
