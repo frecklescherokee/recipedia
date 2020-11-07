@@ -227,4 +227,4 @@ function generateRecipeListItem(recipes, index) {
 }
 
 
-generateStartPage();
+//generateStartPage();
