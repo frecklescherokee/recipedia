@@ -4,7 +4,12 @@ const spoonacularBaseUrl = 'https://api.spoonacular.com';
 
 // DOM element for the <main> HTML element
 var  mainEl = document.querySelector('main');
-
+var recipeListLink= document.querySelector('#recipe-list-link');
+recipeListLink.addEventListener('click', function(){
+  var savedRecipes = JSON.parse(localStorage.getItem("savedRecipes"))||[];
+  console.log('savedRecipes',savedRecipes)
+  generateRecipesList(savedRecipes,false);
+}) 
 // DOM elements for the various pages we'll make
 var homepageEl;
 var recipesListEl;
@@ -23,7 +28,7 @@ function fetchRecipes(searchValue){
         recipes = data.results;
         console.log('Recipes:', recipes);
         // bring up the recipe list page
-        generateRecipesList(recipes);
+        generateRecipesList(recipes,true);
       });
     } else {
       handleError();
@@ -184,7 +189,7 @@ function generateSubmitButtonDivEl() {
 }
 
 /* *************GENERATE RECIPES LIST************* */
-function generateRecipesList(recipesList) {
+function generateRecipesList(recipesList,isFromAPI) {
   let divContainerEl = document.createElement('div');
   let divHeaderEl = generateRecipesListHeadingDivEl();
 
@@ -192,9 +197,9 @@ function generateRecipesList(recipesList) {
   divContainerEl.appendChild(divHeaderEl);
 
   recipesList.forEach(recipe => {
-      divContainerEl.appendChild(generateArticleItem(recipe));
+      divContainerEl.appendChild(generateArticleItem(recipe,isFromAPI));
   })
-
+clearMain();
   mainEl.appendChild(divContainerEl);
 }
 
@@ -212,10 +217,10 @@ function generateRecipesListHeadingDivEl() {
 
 }
 
-function generateArticleItem(recipe) {  
+function generateArticleItem(recipe,isFromAPI) {  
   let articleEl = document.createElement('article');
   let articleImageEl = generateArticleImage(recipe.image);
-  let articleContentEl = generateArticleContent(recipe);
+  let articleContentEl = generateArticleContent(recipe,isFromAPI);
 
   clearMain();
   articleEl.classList.add('media');
@@ -243,7 +248,7 @@ function generateArticleImage(image) {
   return figureEl;
 }
 
-function generateArticleContent(recipe) {
+function generateArticleContent(recipe,isFromAPI) {
   let divMediaConentEl = document.createElement('div');
   let divContentEl = document.createElement('div');
   let paragraphEl = document.createElement('p');
@@ -259,11 +264,23 @@ function generateArticleContent(recipe) {
   boldTitleEl.textContent = recipe.title;
 
   divButtonsEl.classList.add('buttons');
+  if(isFromAPI) {
   saveButtonEl.setAttribute('class', 'button is-primary');
   saveButtonEl.textContent= 'Save';
   saveButtonEl.addEventListener('click', function(){
-      saveRecipe(recipe.id);
-  } );
+    saveRecipe(recipe.title,recipe.image,recipe.id);
+} );
+  } else{
+  saveButtonEl.setAttribute('class', 'button is-danger');
+  saveButtonEl.textContent= 'Remove';
+  saveButtonEl.addEventListener('click', function(){
+    removeRecipe(recipe.id);
+    var savedRecipes = JSON.parse(localStorage.getItem("savedRecipes"));
+    generateRecipesList(savedRecipes); 
+} );
+  }
+  
+
   viewButtonEl.setAttribute('class', 'button is-link');
   viewButtonEl.textContent = 'View';
   viewButtonEl.addEventListener('click', function(){
@@ -286,7 +303,7 @@ function generateArticleContent(recipe) {
 
 
 
-function saveRecipe(recipeId) {
+function saveRecipe(recipeName,recipeImg, recipeId) {
   //create var for savedRecipes
   var savedRecipes = JSON.parse(localStorage.getItem("savedRecipes"));
   console.log("savedRecipes contains " + savedRecipes);
@@ -296,7 +313,17 @@ function saveRecipe(recipeId) {
     savedRecipes = [];
   }
   //push recipedId to savedRecipes
-  savedRecipes.push(recipeId);
+  console.log(recipeId);
+  if (savedRecipes.filter(recipe => recipe.id === recipeId).length === 0) {
+  
+    savedRecipes.push({ 
+      id: recipeId,
+      title: recipeName, 
+      image: recipeImg
+  
+    });
+  }
+  
   console.log("now savedRecipes looks like this: " + savedRecipes);
   //update/set localStorage.savedRecipes with var savedRecipes
   localStorage.setItem("savedRecipes", JSON.stringify(savedRecipes));
@@ -361,5 +388,17 @@ function generateShoppingList() {
   
 }
 //generateStartPage();
+function removeRecipe(recipeId) {
+  //create var for savedRecipes
+  var savedRecipes = JSON.parse(localStorage.getItem("savedRecipes"));
+  console.log("savedRecipes contains " + savedRecipes);
+  //initalize the var with savedRecipes from localStorage if it exists, if not intialize to empty array
+  var updatedRecipes = savedRecipes.filter(recipe =>recipe.id!== recipeId);
+console.log("now savedRecipes looks like this: " + updatedRecipes);
+  //update/set localStorage.savedRecipes with var savedRecipes
+  localStorage.setItem("savedRecipes", JSON.stringify(updatedRecipes));
+
+}
+generateStartPage();
 
 
