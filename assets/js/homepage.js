@@ -282,8 +282,6 @@ function generateArticleContent(recipe) {
   divMediaConentEl.appendChild(divContentEl);
 
   return divMediaConentEl;
-
-
 }
 
 function saveRecipe(recipeId) {
@@ -302,6 +300,72 @@ function saveRecipe(recipeId) {
   localStorage.setItem("savedRecipes", JSON.stringify(savedRecipes));
 
 }
-generateStartPage();
+
+
+var checkboxEl1 = document.querySelector('#checkbox-1');
+var checkboxEl2 = document.querySelector('#checkbox-2');
+var checkboxEl3 = document.querySelector('#checkbox-3');
+var shoppingList = localStorage.getItem('shoppingList') || [];
+const addButtonEl = document.querySelector('#add-button');
+
+var checkedItems = [];
+
+checkboxEl1.addEventListener('change',checked);
+checkboxEl2.addEventListener('change',checked);
+checkboxEl3.addEventListener('change',checked);
+addButtonEl.addEventListener('click', generateShoppingList);
+
+
+function checked(event) {
+  let checkbox = event.target;
+  console.log('event', checkbox);
+
+  if(checkbox.checked){
+    console.log('ingredient', checkbox.dataset.ingredient);
+    addToShoppingList(checkbox.dataset.ingredient);
+
+  } else {
+    console.log('unchecked');
+    removeFromShoppingList(checkbox.dataset.ingredient);
+  }
+
+  toggleAddToShoppingListButton();
+  console.log('selected items:', checkedItems);
+}
+
+
+function addToShoppingList(ingredient){
+  if (!checkedItems.includes(ingredient)){
+    checkedItems.push(ingredient);
+  }
+}
+
+function removeFromShoppingList(ingredient) {
+  var index = checkedItems.indexOf(ingredient);
+  if (index !== -1) {
+    checkedItems.splice(index, 1);
+  }
+
+  
+}
+
+function toggleAddToShoppingListButton() {
+
+  if(checkedItems.length > 0 ){
+    addButtonEl.removeAttribute('disabled');
+
+  } else {
+    addButtonEl.setAttribute('disabled', '');
+
+  }
+
+  console.log(addButtonEl);
+}
+
+function generateShoppingList() {
+  console.log('checkedItems', checkedItems)
+  
+}
+//generateStartPage();
 
 

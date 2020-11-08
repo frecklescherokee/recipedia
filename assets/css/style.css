@@ -18,3 +18,37 @@
 .headin{
     margin-bottom: 10px;
 }
+
+.is-flex{
+    display: flex;
+}
+
+main{
+    margin: 2px 10em;
+    border: 0px solid orange;
+}
+
+#recipe-buttons {
+    border: 0px solid red;
+}
+
+#recipe-header {
+    border: 0px solid purple;
+}
+#recipe-img{
+    border: 0px solid green;
+}
+
+#recipe-list{
+    border: 0px solid blue;
+    padding-right: 5em;
+}
+
+section{
+    margin: 1em auto;
+
+}
+
+.list-item{
+    padding-top: 3px;
+}
