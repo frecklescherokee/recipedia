@@ -287,7 +287,19 @@ function generateArticleContent(recipe) {
 }
 
 function saveRecipe(recipeId) {
-  console.log(recipeId);
+  //create var for savedRecipes
+  var savedRecipes = JSON.parse(localStorage.getItem("savedRecipes"));
+  console.log("savedRecipes contains " + savedRecipes);
+  //initalize the var with savedRecipes from localStorage if it exists, if not intialize to empty array
+  if(!savedRecipes) {
+    console.log("savedRecipes was empty");
+    savedRecipes = [];
+  }
+  //push recipedId to savedRecipes
+  savedRecipes.push(recipeId);
+  console.log("now savedRecipes looks like this: " + savedRecipes);
+  //update/set localStorage.savedRecipes with var savedRecipes
+  localStorage.setItem("savedRecipes", JSON.stringify(savedRecipes));
 
 }
 generateStartPage();
