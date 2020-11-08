@@ -83,11 +83,14 @@ function generateMainContentDiv(){
   return divEl;
 }
 
+// function to generate a back button
 function generateBackButtonEl() {
   let buttonEl = document.createElement('button');
   buttonEl.setAttribute('id', 'back-button');
   buttonEl.textContent = 'Back';
   buttonEl.setAttribute('onclick', 'generateStartPage()');
+  buttonEl.setAttribute('class', 'button is-info');
+  
   let divEl = generateMainContentDiv();
 
   
