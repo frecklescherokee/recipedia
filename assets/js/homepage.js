@@ -284,6 +284,8 @@ function generateArticleContent(recipe) {
   return divMediaConentEl;
 }
 
+
+
 function saveRecipe(recipeId) {
   //create var for savedRecipes
   var savedRecipes = JSON.parse(localStorage.getItem("savedRecipes"));
@@ -318,19 +320,15 @@ addButtonEl.addEventListener('click', generateShoppingList);
 
 function checked(event) {
   let checkbox = event.target;
-  console.log('event', checkbox);
 
   if(checkbox.checked){
-    console.log('ingredient', checkbox.dataset.ingredient);
     addToShoppingList(checkbox.dataset.ingredient);
 
   } else {
-    console.log('unchecked');
     removeFromShoppingList(checkbox.dataset.ingredient);
   }
 
   toggleAddToShoppingListButton();
-  console.log('selected items:', checkedItems);
 }
 
 
@@ -345,8 +343,6 @@ function removeFromShoppingList(ingredient) {
   if (index !== -1) {
     checkedItems.splice(index, 1);
   }
-
-  
 }
 
 function toggleAddToShoppingListButton() {
@@ -358,8 +354,6 @@ function toggleAddToShoppingListButton() {
     addButtonEl.setAttribute('disabled', '');
 
   }
-
-  console.log(addButtonEl);
 }
 
 function generateShoppingList() {
