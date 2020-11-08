@@ -225,4 +225,4 @@ function generateRecipeListItem(recipe) {
 }
 
 
-//generateStartPage();
+generateStartPage();
