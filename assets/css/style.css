@@ -52,3 +52,12 @@ section{
 .list-item{
     padding-top: 3px;
 }
+
+#ingredient-list{
+    margin: 5em 10em;
+}
+
+#ingredient-row{
+    text-align: center;
+}
+
