@@ -9,6 +9,9 @@ var checkedItems = [];
 var searchCriteria;
 var recipeListLink = document.querySelector('#recipe-list-link');
 var shoppingListLink = document.querySelector('#shopping-list-link');
+shoppingListLink.addEventListener('click', function() {
+  generateIngredientListPage();
+})
 var homepageLink = document.querySelector('#homepage-link');
 homepageLink.addEventListener('click', function () {
   console.log('go home');
@@ -397,6 +400,7 @@ function generateShoppingList() {
   })
 
   localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
+  generateIngredientListPage();
   console.log('checkedItems', checkedItems)
 
 }
@@ -542,7 +546,61 @@ function generateRecipeInstructionsSectionEl(recipeInstruction) {
 
   return sectionEl;
 }
+function removeIngredient(event){
+  let ingredient=event.target.dataset.ingredient;
+  let shoppingList = JSON.parse(localStorage.getItem("shoppingList"));
+  var index = shoppingList.indexOf(ingredient);
+  if (index !== -1) {
+    shoppingList.splice(index, 1);
+  } console.log(ingredient, shoppingList);
+  localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
+  generateIngredientListPage();
+}
 
+function generateIngredientListPage(){
+  let listDivEl = document.createElement('div');
+  let shoppingList = JSON.parse(localStorage.getItem("shoppingList"));
+  let headerDivEl = document.createElement('div');
+  let h3El = document.createElement('h3');
+
+
+  h3El.setAttribute('class', 'title is-3');
+  h3El.textContent = 'Shopping List';
+  headerDivEl.setAttribute('id', 'recipe-header');
+  headerDivEl.appendChild(h3El);
+  clearMain(); 
+  listDivEl.setAttribute('id', 'ingredient-list'); 
+  listDivEl.appendChild(headerDivEl);
+  shoppingList.forEach(ingredient => {
+    listDivEl.appendChild(generateIngredient(ingredient));
+  })
+  mainEl.appendChild(listDivEl);
+}
+
+function generateIngredient(ingredient){
+  let articleEl = document.createElement('article');
+  let mediaContentDivEl = document.createElement('div');
+  let contentDivEl = document.createElement('div');
+  let ingredientEl = document.createElement('strong');
+  let deleteButtonEl = document.createElement('button');
+
+  articleEl.classList.add('media');
+  mediaContentDivEl.classList.add('media-content');
+  contentDivEl.classList.add('content'); 
+  contentDivEl.setAttribute('id', 'ingredient-row');
+  ingredientEl.textContent=ingredient;
+  deleteButtonEl.classList.add('delete');
+  deleteButtonEl.setAttribute('data-ingredient', ingredient);
+  deleteButtonEl.setAttribute('id', 'delete-button');
+  deleteButtonEl.addEventListener('click', removeIngredient);
+
+
+  contentDivEl.appendChild(ingredientEl);
+  mediaContentDivEl.appendChild(contentDivEl);
+  articleEl.appendChild(mediaContentDivEl);
+  articleEl.appendChild(deleteButtonEl);
+  return articleEl;
+}
 generateStartPage();
 
 
