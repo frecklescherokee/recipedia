@@ -102,7 +102,7 @@ function generateMainContentDiv() {
 function generateBackButtonEl() {
   let buttonEl = document.createElement('button');
   buttonEl.setAttribute('id', 'back-button');
-  buttonEl.textContent = 'Back';
+  buttonEl.textContent = 'Return to search';
   buttonEl.setAttribute('onclick', 'generateStartPage()');
   buttonEl.setAttribute('class', 'button is-danger is-outlined');
   
@@ -604,7 +604,7 @@ function removeIngredient(event) {
 
 function generateIngredientListPage() {
   let listDivEl = document.createElement('div');
-  let shoppingList = JSON.parse(localStorage.getItem("shoppingList"));
+  let shoppingList = JSON.parse(localStorage.getItem("shoppingList")) || [];
   let headerDivEl = document.createElement('div');
   let h3El = document.createElement('h3');
 
