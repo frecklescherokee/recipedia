@@ -16,6 +16,7 @@
 }
 
 .headin{
+    margin-top: 5em;
     margin-bottom: 10px;
 }
 
@@ -35,7 +36,14 @@ main{
 #recipe-header {
     border: 0px solid purple;
 }
+
+#shopping-list-header{
+    padding-bottom: 2em;
+}
 #recipe-img{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
     border: 0px solid green;
 }
 
