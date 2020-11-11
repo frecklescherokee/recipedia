@@ -89,7 +89,7 @@ function generateBackButtonEl() {
   buttonEl.setAttribute('id', 'back-button');
   buttonEl.textContent = 'Back';
   buttonEl.setAttribute('onclick', 'generateStartPage()');
-  buttonEl.setAttribute('class', 'button is-info');
+  buttonEl.setAttribute('class', 'button is-danger is-outlined');
   
   let divEl = generateMainContentDiv();
 
