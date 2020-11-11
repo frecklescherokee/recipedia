@@ -1,16 +1,19 @@
 # recipedia
 
-## Screenshots
 
-## Homepage Wireframe
-![image](https://user-images.githubusercontent.com/71302040/98320696-0ba18180-1fa9-11eb-8458-539578d00e7a.png)
+## Homepage 
+![image] (https://user-images.githubusercontent.com/69940829/98845542-7de3ed00-2413-11eb-9b19-620e6c004534.png)
 
-## Recipe List Page Wireframe
-![image](https://user-images.githubusercontent.com/71302040/98321125-e2cdbc00-1fa9-11eb-9148-a5d75bdaa495.png)
+## Recipe List Page
+![image] (https://user-images.githubusercontent.com/69940829/98846228-66f1ca80-2414-11eb-95c5-8ca50240dba2.png)
 
-## Ingredients & Instructions Page Wireframe
-![image](https://user-images.githubusercontent.com/71302040/98382298-a5504980-2010-11eb-8ac6-b4b1363a25d7.png)
+## Ingredients & Instructions Page 
+![image](https://media.giphy.com/media/sr27asZstT6RL3xWcL/giphy.gif)
 
-## Shopping List Page Wireframe
-![image](https://user-images.githubusercontent.com/71302040/98382411-c87af900-2010-11eb-93e1-7a86dcc00c8e.png)
+## Shopping List 
+![image] (https://user-images.githubusercontent.com/69940829/98846513-b0421a00-2414-11eb-96c7-5532e867c9b8.png)
 
+## Description
+Recipedia is a website that uses Javascript, ChartAPI and Spoonacular API to provide healthy recipe options with nutritional facts. To begin using the site, the user can type an ingredient into the search bar, the user is then shown meal options using the ingredient searched for. When selecting a recipe the user is shown nutritional facts and instructions for the meal. The website also provides the user with a shopping list to save or remove ingredients they may or may not have and a recipe list to save any favorite recipes. 
+ 
+## Contribution 
