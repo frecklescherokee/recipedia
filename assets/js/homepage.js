@@ -9,9 +9,10 @@ var checkedItems = [];
 var searchCriteria;
 var recipeListLink = document.querySelector('#recipe-list-link');
 var shoppingListLink = document.querySelector('#shopping-list-link');
-shoppingListLink.addEventListener('click', function() {
+shoppingListLink.addEventListener('click', function () {
   generateIngredientListPage();
 })
+
 var homepageLink = document.querySelector('#homepage-link');
 homepageLink.addEventListener('click', function () {
   console.log('go home');
@@ -30,9 +31,8 @@ var ingredientsInstructionsEl;
 var shoppingListEl;
 
 
-
 function fetchRecipes(searchValue) {
- console.log('searchCriteria', searchCriteria, searchValue);
+  console.log('searchCriteria', searchCriteria, searchValue);
   const apiUrl = `${spoonacularBaseUrl}/recipes/complexSearch?&apiKey=${RECIPE_API_KEY}&${getQueryParams(searchValue)}`;
   let recipes;
 
@@ -233,20 +233,33 @@ function generateRecipesList(recipesList, isFromAPI) {
   divContainerEl.classList.add('recipes-container');
   divContainerEl.appendChild(divHeaderEl);
 
-  recipesList.forEach(recipe => {
-    divContainerEl.appendChild(generateArticleItem(recipe, isFromAPI));
-  })
-  divContainerEl.appendChild(backButtonEl);
+  if(recipesList.length > 0 ){
+    recipesList.forEach(recipe => {
+      divContainerEl.appendChild(generateArticleItem(recipe, isFromAPI));
+    })
+    divContainerEl.appendChild(backButtonEl);
+
+  } else {
+    let emptyHeaderDivEl = document.createElement('div');
+    let h5El = document.createElement('h5');
+
+    h5El.setAttribute('class', 'title is-5');
+    h5El.textContent = 'You do not have any recipes saved';
+    emptyHeaderDivEl.setAttribute('id', 'shopping-list-header');
+    emptyHeaderDivEl.appendChild(h5El);
+
+    divContainerEl.appendChild(emptyHeaderDivEl);
+  }
   clearMain();
   mainEl.appendChild(divContainerEl);
 }
 
 function generateRecipesListHeadingDivEl() {
   let divEl = document.createElement('div');
-  let headingEl = document.createElement('h2');
+  let headingEl = document.createElement('h3');
 
   divEl.classList.add('header');
-  headingEl.setAttribute('class', 'title is-2');
+  headingEl.setAttribute('class', 'title is-3');
   headingEl.textContent = 'Recipes List';
 
   divEl.appendChild(headingEl);
@@ -415,11 +428,11 @@ function toggleAddToShoppingListButton() {
 function generateShoppingList() {
   var shoppingList = JSON.parse(localStorage.getItem('shoppingList')) || [];
   checkedItems.forEach(item => {
-    if(!shoppingList.includes(item)){
+    if (!shoppingList.includes(item)) {
       shoppingList.push(item);
     }
   })
-
+  checkedItems = [];
   localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
   generateIngredientListPage();
   console.log('checkedItems', checkedItems)
@@ -438,10 +451,11 @@ function removeRecipe(recipeId) {
 
 }
 
-function generateRecipePage(recipe, ingredients) {
+function generateRecipePage(recipe, recipeDetails) {
+  console.log(recipeDetails)
   let headerSectionEl = generateHeaderSection(recipe.title);
-  let imgAndIngredientsSectionEl = generateImgAndIngredientsSectionEl(recipe, ingredients.extendedIngredients);
-  let recipeInstructionSectionEl = generateRecipeInstructionsSectionEl(ingredients.summary);
+  let imgAndIngredientsSectionEl = generateImgAndIngredientsSectionEl(recipe, recipeDetails.extendedIngredients, recipeDetails.nutrition);
+  let recipeInstructionSectionEl = generateRecipeInstructionsSectionEl(recipeDetails.summary);
 
   clearMain()
   mainEl.appendChild(headerSectionEl);
@@ -449,7 +463,7 @@ function generateRecipePage(recipe, ingredients) {
   mainEl.appendChild(recipeInstructionSectionEl);
 }
 
-function generateHeaderSection(recipeName){
+function generateHeaderSection(recipeName) {
   let sectionEl = document.createElement('section');
   let titleDivEl = document.createElement('div');
   let h3El = document.createElement('h3');
@@ -463,26 +477,36 @@ function generateHeaderSection(recipeName){
   sectionEl.setAttribute('class', 'is-flex is-flex-wrap-nowrap is-justify-content-space-between')
   sectionEl.appendChild(titleDivEl);
   sectionEl.appendChild(buttonDivEl);
-  
+
   return sectionEl;
 }
 
-function generateImgAndIngredientsSectionEl(recipe, ingredients) {
+function generateImgAndIngredientsSectionEl(recipe, ingredients, nutrition) {
   let sectionEl = document.createElement('section');
   let imgDiv = document.createElement('div');
   let imgEl = document.createElement('img');
+  let chartEl = document.createElement('img');
   let recipeListDiv = document.createElement('div');
+  let proteins = nutrition.caloricBreakdown.percentProtein;
+  let fats = nutrition.caloricBreakdown.percentFat;
+  let carbs = nutrition.caloricBreakdown.percentCarbs;
+
+  let chartApiUrl = `https:/image-charts.com/chart?chl=Protein|Fats|Carbs&chco=95CB59%7CEC4545%7C4464AC&chd=t%3A${proteins}%2C${fats}%2C${carbs}&chs=312x231&cht=p3`
 
   sectionEl.setAttribute('class', 'is-flex is-flex-wrap-nowrap is-justify-content-space-between');
-  
+
+  console.log(nutrition);
+
   imgDiv.setAttribute('id', 'recipe-img');
   imgEl.setAttribute('src', recipe.image);
+  chartEl.setAttribute('src', chartApiUrl);
   imgDiv.appendChild(imgEl);
+  imgDiv.appendChild(chartEl);
 
   recipeListDiv.setAttribute('id', 'recipe-list');
   ingredients.forEach(ingredient => {
     recipeListDiv.appendChild(generateIngredientListEl(ingredient));
-    
+
   })
 
   sectionEl.appendChild(imgDiv);
@@ -491,7 +515,7 @@ function generateImgAndIngredientsSectionEl(recipe, ingredients) {
   return sectionEl;
 }
 
-function generateIngredientListEl(ingredient){
+function generateIngredientListEl(ingredient) {
   let articleEl = document.createElement('article');
   let mediaContentDivEl = document.createElement('div');
   let contentDivEl = document.createElement('div');
@@ -515,12 +539,12 @@ function generateIngredientListEl(ingredient){
 
   return articleEl;
 }
-function generateHeaderButtonsDivEl(){
+function generateHeaderButtonsDivEl() {
   let divEl = document.createElement('div');
   let addButtonEl = document.createElement('button');
   let backButtonEl = document.createElement('button');
 
-  divEl.setAttribute('id','recipe-buttons');
+  divEl.setAttribute('id', 'recipe-buttons');
   divEl.setAttribute('class', 'buttons is-flex is-flex-wrap-nowrap is-justify-content-end');
 
   addButtonEl.setAttribute('id', 'add-button');
@@ -531,10 +555,10 @@ function generateHeaderButtonsDivEl(){
 
   backButtonEl.setAttribute('id', 'back-button');
   backButtonEl.setAttribute('class', 'button is-small is-danger is-outlined');
-  backButtonEl.addEventListener('click', function() {
+  backButtonEl.addEventListener('click', function () {
     backButtonEl.classList.add('is-loading');
     fetchRecipes(searchCriteria);
-    
+
   })
   backButtonEl.textContent = 'Return to Recipes';
 
@@ -567,8 +591,8 @@ function generateRecipeInstructionsSectionEl(recipeInstruction) {
 
   return sectionEl;
 }
-function removeIngredient(event){
-  let ingredient=event.target.dataset.ingredient;
+function removeIngredient(event) {
+  let ingredient = event.target.dataset.ingredient;
   let shoppingList = JSON.parse(localStorage.getItem("shoppingList"));
   var index = shoppingList.indexOf(ingredient);
   if (index !== -1) {
@@ -578,7 +602,7 @@ function removeIngredient(event){
   generateIngredientListPage();
 }
 
-function generateIngredientListPage(){
+function generateIngredientListPage() {
   let listDivEl = document.createElement('div');
   let shoppingList = JSON.parse(localStorage.getItem("shoppingList"));
   let headerDivEl = document.createElement('div');
@@ -587,18 +611,31 @@ function generateIngredientListPage(){
 
   h3El.setAttribute('class', 'title is-3');
   h3El.textContent = 'Shopping List';
-  headerDivEl.setAttribute('id', 'recipe-header');
+  headerDivEl.setAttribute('id', 'shopping-list-header');
   headerDivEl.appendChild(h3El);
-  clearMain(); 
-  listDivEl.setAttribute('id', 'ingredient-list'); 
+  clearMain();
+  listDivEl.setAttribute('id', 'ingredient-list');
   listDivEl.appendChild(headerDivEl);
-  shoppingList.forEach(ingredient => {
-    listDivEl.appendChild(generateIngredient(ingredient));
-  })
+  if (shoppingList.length > 0) {
+    shoppingList.forEach(ingredient => {
+      listDivEl.appendChild(generateIngredient(ingredient));
+    })
+  } else {
+    let emptyHeaderDivEl = document.createElement('div');
+    let h5El = document.createElement('h5');
+
+    h5El.setAttribute('class', 'title is-5');
+    h5El.textContent = 'You do not have any ingredients saved';
+    emptyHeaderDivEl.setAttribute('id', 'shopping-list-header');
+    emptyHeaderDivEl.appendChild(h5El);
+
+    listDivEl.appendChild(emptyHeaderDivEl);
+  }
+
   mainEl.appendChild(listDivEl);
 }
 
-function generateIngredient(ingredient){
+function generateIngredient(ingredient) {
   let articleEl = document.createElement('article');
   let mediaContentDivEl = document.createElement('div');
   let contentDivEl = document.createElement('div');
@@ -607,9 +644,9 @@ function generateIngredient(ingredient){
 
   articleEl.classList.add('media');
   mediaContentDivEl.classList.add('media-content');
-  contentDivEl.classList.add('content'); 
+  contentDivEl.classList.add('content');
   contentDivEl.setAttribute('id', 'ingredient-row');
-  ingredientEl.textContent=ingredient;
+  ingredientEl.textContent = ingredient;
   deleteButtonEl.classList.add('delete');
   deleteButtonEl.setAttribute('data-ingredient', ingredient);
   deleteButtonEl.setAttribute('id', 'delete-button');
@@ -622,6 +659,7 @@ function generateIngredient(ingredient){
   articleEl.appendChild(deleteButtonEl);
   return articleEl;
 }
+
 generateStartPage();
 
 
