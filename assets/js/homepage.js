@@ -491,7 +491,7 @@ function generateImgAndIngredientsSectionEl(recipe, ingredients, nutrition) {
   let fats = nutrition.caloricBreakdown.percentFat;
   let carbs = nutrition.caloricBreakdown.percentCarbs;
 
-  let chartApiUrl = `https:/image-charts.com/chart?chl=Protein|Fats|Carbs&chco=95CB59%7CEC4545%7C4464AC&chd=t%3A${proteins}%2C${fats}%2C${carbs}&chs=312x231&cht=p3`
+  let chartApiUrl = `https://image-charts.com/chart?chl=Protein|Fats|Carbs&chco=95CB59%7CEC4545%7C4464AC&chd=t%3A${proteins}%2C${fats}%2C${carbs}&chs=312x231&cht=p3`
 
   sectionEl.setAttribute('class', 'is-flex is-flex-wrap-nowrap is-justify-content-space-between');
 
