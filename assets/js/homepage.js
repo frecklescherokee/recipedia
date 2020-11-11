@@ -98,6 +98,22 @@ function generateMainContentDiv() {
   return divEl;
 }
 
+// function to generate a back button
+function generateBackButtonEl() {
+  let buttonEl = document.createElement('button');
+  buttonEl.setAttribute('id', 'back-button');
+  buttonEl.textContent = 'Back';
+  buttonEl.setAttribute('onclick', 'generateStartPage()');
+  buttonEl.setAttribute('class', 'button is-danger is-outlined');
+  
+  let divEl = generateMainContentDiv();
+
+  
+  divEl.appendChild(buttonEl);
+
+  return divEl;
+}
+
 // function to generate an h1 within a div
 function generateHeadingDivEl(headerText, classes) {
   let headingEl = document.createElement('h1');
@@ -145,7 +161,9 @@ function generateParagraphEl(recipes, index) {
 
 /////////////////////////////////////////////////////
 /***** Start Page Generator *****/
-function generateStartPage() {
+function generateStartPage(){
+  clearMain();
+ 
   // generate the 3 div elements of this page
   let inputContainerDivEl = document.createElement('div');
   inputContainerDivEl.setAttribute('class', 'field has-addons has-addons-centered');
@@ -192,8 +210,9 @@ function generateInputDivEl() {
 
 // function to generate the fetch/submit button
 function generateSubmitButtonDivEl() {
-  let buttonEl = document.createElement('button');
-  let divEl = generateMainContentDiv();
+    let buttonEl = document.createElement('button');
+    let divEl = generateMainContentDiv();
+    
 
   divEl.setAttribute('class', 'control');
   buttonEl.setAttribute('class', 'button is-info');
@@ -209,6 +228,7 @@ function generateSubmitButtonDivEl() {
 function generateRecipesList(recipesList, isFromAPI) {
   let divContainerEl = document.createElement('div');
   let divHeaderEl = generateRecipesListHeadingDivEl();
+  let backButtonEl = generateBackButtonEl();
 
   divContainerEl.classList.add('recipes-container');
   divContainerEl.appendChild(divHeaderEl);
@@ -217,6 +237,8 @@ function generateRecipesList(recipesList, isFromAPI) {
     recipesList.forEach(recipe => {
       divContainerEl.appendChild(generateArticleItem(recipe, isFromAPI));
     })
+    divContainerEl.appendChild(backButtonEl);
+
   } else {
     let emptyHeaderDivEl = document.createElement('div');
     let h5El = document.createElement('h5');
